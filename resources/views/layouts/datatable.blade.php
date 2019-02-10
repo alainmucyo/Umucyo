@@ -1,0 +1,9 @@
+<script type="text/javascript" src="{{ asset('datatable/datatables.js') }}"></script>
+<script type="text/javascript" src="{{ asset('datatable/js/dataTables.buttons.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('datatable/dataTables.bootstrap4.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('datatable/js/pdfmake.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('datatable/js/vfs_fonts.js') }}"></script>
+<script type="text/javascript" src="{{ asset('datatable/js/jszip.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('datatable/js/buttons.html5.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('datatable/js/buttons.print.min') }}"></script>
+<script type="text/javascript" src="{{ asset('datatable/buttons.colVis.min.js') }}"></script>

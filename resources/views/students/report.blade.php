@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+@include("material")
+</head>
+<body style="background-color: white !important;">
+<div class="containe-fluid" style="margin-top: 4%;background-color: white !important;font-size: 12px;">
+    <div class="card border" style="background-color: white !important;">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8">
+                    REPUBLIC OF RWANDA <br>
+                    MINISTRY OF EDUCATION <br>
+                    UMUCYO School Management
+                </div>
+                <div class="float-right col-md-4">
+                    ACADEMIC YEAR: <b>{{ \App\Period::get()->first()->year }}</b> <br>
+                    LEVEL: <b>{{ \App\Student::find($id)->level->name }}</b> <br>
+                    CLASS: <b> {{ \App\Student::find($id)->room->class }}</b><br>
+                    NAMES: <b>{{ \App\Student::find($id)->fname }}</b>
+                    @php
+                        $term=0;
+                        if (\App\Period::get()->first()->term==1){
+                            $term="First Term";
+                        }
+                        else if (\App\Period::get()->first()->term==2){
+                        $term="Second Term";
+                        }
+                        else{
+                        $term="Third Term";
+                        }
+                    @endphp
+                </div>
+            </div>
+            <div class="text-center" >
+                <h5 style="margin-left: 30%">Student Academic Report</h5>
+                <table class="table table-bordered table-sm">
+                    <tr>
+                        <th rowspan="2">COURSES</th>
+                        <th colspan="3">Maximum</th>
+                        <th colspan="3">{{ $term }}</th>
+
+                    </tr>
+                    <tr>
+
+                        <th>CAT</th>
+                        <th>EX</th>
+                        <th>TOT</th>
+                        <th>CAT</th>
+                        <th>EX</th>
+                        <th>TOT</th>
+                    </tr>
+                    @foreach($lessons as $lesson)
+                        @php
+                            $total=$lesson->marks->where("student_id",$id)->pluck("total")->sum();
+                            $totals=$lesson->totals->where("student_id",$id)->pluck("total")->sum();
+
+                            $marks=0;
+                            $exam=0;
+                        if ($total==0){
+                            $marks=0;
+                        }
+                        else{
+                        $marks=round($lesson->hours*10*$lesson->marks->where("student_id",$id)->pluck("marks")->sum()/$total,2);
+                        $sum_quiz +=$marks;
+                        }
+                        if ($totals==0){
+                        $exam=0;
+                        }
+                        else{
+                        $exam=round($lesson->hours*10*$lesson->totals->where("student_id",$id)->pluck("marks")->sum()/$totals,2);
+                        $sum_exam +=$exam;
+                        }
+                        $term=$marks+$exam;
+                        $sum_total +=$lesson->hours*10;
+                        @endphp
+                        <tr>
+
+                            <td>{{ $lesson->name }}</td>
+                            <th>{{ $lesson->hours*10 }}</th>
+                            <th>{{ $lesson->hours*10 }}</th>
+                            <th>{{ $lesson->hours*10*2 }}</th>
+                            <td>{{ $marks }}</td>
+                            <td>{{ $exam }}</td>
+                            <td>{{ $term }}</td>
+                        </tr>
+                    @endforeach
+                    <tr>
+
+                        <th>Total</th>
+                        <th>{{ $sum_total }}</th>
+                        <th>{{ $sum_total }}</th>
+                        <th>{{ $sum_total*2 }}</th>
+                        <td>{{ $sum_quiz }}</td>
+                        <td>{{ $sum_exam }}</td>
+                        <td>{{ $sum_quiz+$sum_exam }}</td>
+                    </tr>
+                    <tr>
+
+                        <th>Percentage</th>
+
+                        <td colspan="6"><b class="float-right">
+                                @if($sum_total*2==0)
+                                {{ round(100*($sum_quiz+$sum_exam),2) }}%
+                            @else
+                                    {{ round(100*($sum_quiz+$sum_exam)/($sum_total*2),2) }}%
+                                    @endif
+                            </b>
+                        </td>
+                    </tr>
+                      <tr>
+
+                            <th>Position</th>
+
+                            <td colspan="6"><b class="float-right"> {{ $b }} of {{ $students->count() }}</b></td>
+                        </tr>
+                </table>
+                <small class="float-right text-muted" style="font-size: 7px">Generated By Umucyo School Management</small>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="{{ asset('js/jquery.js')}}"></script>
+<script type="text/javascript">
+    $(function () {
+        // alert($("#quiz").attr("total"));
+    });
+</script>
+</html>
